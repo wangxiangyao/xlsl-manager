@@ -25,39 +25,62 @@ const FormItem = Form.Item;
 class ListStage extends Component {
   constructor(props) {
     super(props)
-    const { dispatch } = this.props
-    // 定义了每种表格（ordersList/goodsList/adminsList）的配置项
-    // 表头配置项，写在了render()函数中
-    // 由于jsx必须写在React域中，所以没想到怎么抽象抽象
-    const orderTableConfig = {
-      bordered: false,
-      loading: this.props.orders.isFetching,
-      pagination: true,
-      selectedOrderStylist: 'all',
-      expandedRowRender: record => <SubList baby={record.baby} key={record.baby}></SubList>,
-      title: () => '订单列表',
-      rowSelection: {},
-      scroll: undefined,
-
     }
-    /*
-     *  初始化的过滤条件、展示table的表头配置、改变filter.what
-     */
-      dispatch(changeFilterWhat('orders'))
+
+    componentWillMount () {
+      const { dispatch } = this.props
+      // 定义了每种表格（ordersList/goodsList/adminsList）的配置项
+      // 表头配置项，写在了render()函数中
+      // 由于jsx必须写在React域中，所以没想到怎么抽象抽象
+
+      /*
+       *  初始化的过滤条件、展示table的表头配置、改变filter.what
+       */
       // 初始化配置条件
       // 做一个深拷贝，这样，保留默认配置，在清空和初始化的时候要用到
       const obj = JSON.parse(JSON.stringify((orderDefaultConditionConfig)))
-      dispatch(changeFilterCondition(obj, [
-        {
-          type: 'member_phone',
-          action: this.searchMemberPhone,
-        },
-      ]))
-      dispatch(fetchOrdersIfNeeded());
+      const orderTableConfig = {
+        bordered: false,
+        loading: this.props.orders.isFetching,
+        pagination: true,
+        selectedOrderStylist: 'all',
+        expandedRowRender: record => <SubList baby={record.baby} key={record.baby}></SubList>,
+        title: () => '订单列表',
+        rowSelection: {},
+        scroll: undefined,
+
+      }
       this.state = {
         tableConfig: orderTableConfig,
       }
+      // TODO: 保存配置条件，即使重新跳转回页面
+      dispatch(changeFilterCondition(obj, [
+        {
+          type: 'member_phone',
+          action: this.filterMemberPhone,
+        },
+      ]))
+      dispatch(fetchOrdersIfNeeded());
+
     }
+
+  // componentWillReceiveProps () {
+  //     const { dispatch } = this.props
+  //     const obj = JSON.parse(JSON.stringify((orderDefaultConditionConfig)))
+  //     dispatch(changeFilterCondition(obj, [
+  //       {
+  //         type: 'member_phone',
+  //         action: this.searchMemberPhone,
+  //       },
+  //     ]))
+  //     dispatch(fetchOrdersIfNeeded());
+  //     // this.state = {
+  //     //   tableConfig: this.state.tableConfig,
+  //     // }
+  //   }
+    // componentWillUpdate() {
+    //
+    // }
 
   // componentWillMount () {
   //
@@ -69,12 +92,10 @@ class ListStage extends Component {
   //   if (this.props)
   // }
 
-  // 以下，定义过滤函数
-  searchMemberPhone = (record, condition) => {
+  // 以下，定义过滤函数,过滤函数均以filter开头
+  filterMemberPhone = (record, condition) => {
     const reg = new RegExp(condition.searchText, 'gi');
-    console.log(reg);
     const match = record.member_phone.match(reg)
-    console.log(match);
     if (!match) {
       return null;
     }
@@ -138,8 +159,8 @@ class ListStage extends Component {
 
   render () {
     // 定义订单orders表头
+    console.log(2)
     const { filter,dispatch } = this.props;
-    console.log(filter);
     const state = this.state;
     const orderColumns = [
       {
@@ -204,21 +225,21 @@ class ListStage extends Component {
         <div className="components-table-demo-control-bar">
           <Form layout="inline">
             <FormItem label="设计师">
-              <Radio.Group size="default" value='' onChange={this.handleFilterOrderStylistChange}>
+              <Radio.Group size="default" value='' onChange={this.handleFilterOrderStylistChange.bind(this)}>
                 <Radio.Button value="">all</Radio.Button>
                 <Radio.Button value="0">钱晓峰</Radio.Button>
                 <Radio.Button value="1">王相尧</Radio.Button>
               </Radio.Group>
             </FormItem>
             <FormItem label="订单状态">
-              <Radio.Group size="default" value='' onChange={this.handleFilterOrderLevelChange}>
+              <Radio.Group size="default" value='' onChange={this.handleFilterOrderLevelChange.bind(this)}>
                 <Radio.Button value="">all</Radio.Button>
                 <Radio.Button value="0">待搭配</Radio.Button>
                 <Radio.Button value="1">待发货</Radio.Button>
               </Radio.Group>
             </FormItem>
             <FormItem label="">
-              <Button type="primary" onClick={this.handleCleanFilter}>清 空</Button>
+              <Button type="primary" onClick={this.handleCleanFilter.bind(this)}>清 空</Button>
             </FormItem>
           </Form>
         </div>

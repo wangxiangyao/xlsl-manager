@@ -22,12 +22,12 @@ class App extends Component {
             <Header>
               <Navigation/>
             </Header>
-            <Content style={{ padding: '0 50px' }}>
+            <Content style={{ padding: "10px 20px 0" }}>
               <div style={{ background: '#fff', padding: 24, minHeight: '100vh' }}>
                 <Route exact path="/" render={() => (<Redirect to="/orders"/>)} />
                 <Route exact path="/orders" component={ordersListStage}/>
-                <Route exact path="/goods" component={goodsListStage}/>
-                <Route exact path="/admins" component={adminsListStage}/>
+                {/*<Route exact path="/goods" component={goodsListStage}/>*/}
+                {/*<Route exact path="/admins" component={adminsListStage}/>*/}
                 <Route exact path="/xinan" component={xinanListStage}/>
               </div>
             </Content>

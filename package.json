@@ -105,6 +105,10 @@
     "/getOrders": {
       "target": "http://localhost:2000",
       "ws": true
+    },
+    "/getGoods": {
+      "target": "http://localhost:2000",
+      "ws": true
     }
   }
 }

@@ -29,6 +29,9 @@ export default class Navigation extends Component {
           <Menu.Item key="4">
             <NavLink to="admins">账号管理</NavLink>
           </Menu.Item>
+          <Menu.Item key="5">
+            <NavLink to="/xinan">纽扣的页面</NavLink>
+          </Menu.Item>
         </Menu>
       </div>
     )

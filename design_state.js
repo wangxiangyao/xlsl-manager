@@ -5,6 +5,7 @@
 //     didInvalidate: false// 是否应该销毁，数据是否新鲜
 //     fetchedPageCount: 10// 默认是10个
 //     nextPageUrl: '/orders?offset=10' // 偏移量
+//     reciveAt: 时间戳
 //     items: ['所有的order']  // 每个Order需要store的状态，可再优化
 //   }
 //   goods: {
